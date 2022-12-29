@@ -1,0 +1,29 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  frontend:
+    image: europe-west6-docker.pkg.dev/gcp-e22-371113/gcpapp/frontend:latest
+    build: ./Frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+  backend:
+    image: europe-west6-docker.pkg.dev/gcp-e22-371113/gcpapp/backend:latest
+    build: ./Backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - MONGO_DB_CONNECTION_STRING=mongodb+srv://gcpnimly:FSd2DmApFmsGkyg7@database1.auhgscv.mongodb.net  
+      - MONGO_DB_NAME=database1
+      - REDIS_URI=redisdb
+    depends_on:
+      - redisdb
+  redisdb:
+    image: europe-west6-docker.pkg.dev/gcp-e22-371113/gcpapp/redisdb:latest
+    build: ./RedisDb
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server

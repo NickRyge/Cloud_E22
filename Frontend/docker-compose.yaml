@@ -1,0 +1,7 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  pwa:
+    image: pwa:latest
+    ports:
+      - "80:80"
+
